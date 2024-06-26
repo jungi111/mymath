@@ -1,22 +1,22 @@
-# main.py
 import os
 from dotenv import load_dotenv
-from langchain_teddynote import logging
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
+from langchain.globals import set_verbose
 from langchain_teddynote.messages import stream_response
 
 class MathProblemGenerator:
     def __init__(self):
         # .env 파일 로드
         load_dotenv()
-        logging.langsmith(os.getenv('LANGCHAIN_PROJECT'))
+        
+        set_verbose(True)
         
         self.template = """
         Answer the user query.\n
         {format_instructions}\n
-        {content}에 대한 수학 문제를 만들어주고, 그 문제에 대한 정답과 설명을 다음 형식으로 작성해 주세요.
+        {content}에 대한 수학 문제를 만들어주고, 그 문제에 대한 정답과 설명을 다음 형식으로 한글로 작성해 주세요.
 
         문제는 `question`에
         정답은 `answer`에

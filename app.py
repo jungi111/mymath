@@ -1,7 +1,13 @@
-# app.py
 from flask import Flask, request, jsonify
 from main import MathProblemGenerator
 from flask_cors import CORS
+import os
+from dotenv import load_dotenv
+from langchain_teddynote import logging
+
+# .env 파일 로드 및 로깅 설정
+load_dotenv()
+logging.langsmith(os.getenv('LANGCHAIN_PROJECT'))
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +27,7 @@ def home():
             <ul>
                 <li>POST /generate_question: Generate a math problem with a given content</li>
             </ul>
+            <p>Example content: 소인수분해</p>
         </body>
     </html>
     """
