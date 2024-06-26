@@ -14,6 +14,8 @@ class MathProblemGenerator:
         logging.langsmith(os.getenv('LANGCHAIN_PROJECT'))
         
         self.template = """
+        Answer the user query.\n
+        {format_instructions}\n
         {content}에 대한 수학 문제를 만들어주고, 그 문제에 대한 정답과 설명을 다음 형식으로 작성해 주세요.
 
         문제는 `question`에
@@ -38,4 +40,5 @@ class MathProblemGenerator:
     def generate_question(self, content):
         input_data = {"content": content}
         response = self.chain.invoke(input_data)
+        print(response)
         return response
