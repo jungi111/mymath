@@ -37,8 +37,8 @@ class MathProblemGenerator:
         
         self.chain = self.prompt | self.model | self.output_parser
     
-    def generate_question(self, content):
+    async def generate_question(self, content):
         input_data = {"content": content}
-        response = self.chain.invoke(input_data)
+        response = await self.chain.ainvoke(input_data)
         print(response)
         return response

@@ -1,4 +1,5 @@
 import streamlit as st
+import asyncio
 from main import MathProblemGenerator
 
 # MathProblemGenerator 객체를 세션 상태에 저장
@@ -27,7 +28,8 @@ topic = st.selectbox("Select Topic", subjects[grade])
 # 문제 생성 버튼
 if st.button("Generate Question"):
     generator = st.session_state['generator']
-    response = generator.generate_question(topic)
+    # 비동기 함수 호출
+    response = asyncio.run(generator.generate_question(topic))
     st.session_state['response'] = response
 
 # 문제 출력

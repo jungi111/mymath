@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
+from quart import Quart, request, jsonify
+from quart_cors import cors
 from main import MathProblemGenerator
-from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from langchain_teddynote import logging
@@ -9,12 +9,12 @@ from langchain_teddynote import logging
 load_dotenv()
 logging.langsmith(os.getenv('LANGCHAIN_PROJECT'))
 
-app = Flask(__name__)
-CORS(app)
+app = Quart(__name__)
+cors(app)
 generator = MathProblemGenerator()
 
 @app.route("/", methods=["GET"])
-def home():
+async def home():
     return """
     <html>
         <head>
@@ -33,15 +33,15 @@ def home():
     """
 
 @app.route("/generate_question", methods=["POST"])
-def generate_question():
+async def generate_question():
     if request.is_json:
-        data = request.get_json()
+        data = await request.get_json()
         content = data.get("content", "")
         if not content:
             return jsonify({"error": "Content is required"}), 400
 
         try:
-            response = generator.generate_question(content)
+            response = await generator.generate_question(content)
             return jsonify(response)
         except Exception as e:
             print(f"Error: {e}")  # 예외 디버그 로그 추가
